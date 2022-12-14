@@ -40,7 +40,7 @@ contract Rollup {
 
         // just setting the last element of the inputs as final state
         (, uint _x, uint _y) = abi.decode(
-            _input[_input.length],
+            _input[_input.length - 1],
             (address, uint, uint)
         );
 

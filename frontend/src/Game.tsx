@@ -12,17 +12,18 @@ export function Game() {
   const handleSubmit = async () => {
     if (x !== null && y !== null) {
       // retrieve message to be signed
-      const message = ethers.utils.solidityPack(["uint", "uint"], [x, y]);
+      const message = ethers.utils.defaultAbiCoder.encode(
+        ["address", "uint", "uint"],
+        [await signer?.getAddress(), x, y]
+      );
 
       // create signature
       const sig = await signer?.signMessage(message);
 
       // submit data to sequencer
-      axios.post("http://localhost:3001/tx", {
-        data: {
-          data: message,
-          signature: sig,
-        },
+      await axios.post("http://localhost:4000/tx/", {
+        message: message,
+        signature: sig,
       });
     }
   };
